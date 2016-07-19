@@ -292,9 +292,11 @@ class Message
                 throw new \RuntimeException('Error fetching overview');
             }
             $this->messageOverview = array_shift($results);
-            if ( ! isset($this->messageOverview->date)) {
+            if ( !isset($this->messageOverview->date) ) {
                 $this->messageOverview->date = null;
             }
+            if ( !isset($this->messageOverview->subject) )
+                $this->messageOverview->subject = null;
         }
 
         return $this->messageOverview;
