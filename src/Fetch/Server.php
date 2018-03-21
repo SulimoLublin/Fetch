@@ -116,6 +116,12 @@ class Server
      */
     protected $service = 'imap';
 
+     /**
+     * Enable SSL in connection
+     * @var boolean
+     */
+    protected $sslEnabled = true;
+
     /**
      * This constructor takes the location and service thats trying to be connected to as its arguments.
      *
@@ -222,6 +228,10 @@ class Server
         }
     }
 
+    public function setSslEnabled($sslEnabled) {
+        $this->sslEnabled = $sslEnabled;
+    }
+
     /**
      * This funtion is used to set various options for connecting to the server.
      *
@@ -288,8 +298,13 @@ class Server
         if (isset($this->port))
             $mailboxPath .= ':' . $this->port;
 
-        if ($this->service != 'imap')
-            $mailboxPath .= '/' . $this->service;
+        if ($this->service != 'imap') {
+             $mailboxPath .= '/' . $this->service;
+        }
+
+        if($this->service == 'pop3' && $this->sslEnabled) {
+            $mailboxPath .= '/ssl';
+        }
 
         foreach ($this->flags as $flag) {
             $mailboxPath .= '/' . $flag;
